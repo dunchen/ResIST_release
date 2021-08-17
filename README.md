@@ -69,7 +69,7 @@ Following independent training, the updates from each sub-ResNet are aggregated 
 If a parameter is only partitioned to a single sub-ResNet, aggregation simplifies to copying the parameter into the global model.
 After aggregation, layers from the global model are re-partitioned randomly to create a new group of sub-ResNets, and this entire process is repeated.
 
-| ![fig_3.jpg](/images/resist/Decentralized (1).png) |
+| ![fig_3.jpg](/images/resist/Decentralized.png) |
 |:--:|
 | <b>Figure 3: A depiction of the decentralized repartition procedure. This example partitions a ResNet with eight blocks into four different sub-ResNets. The blue-green-red squares dictate the data that lies per worker; the orange column dictates the last classification layer. As seen in the figure, each worker (from initialization partition to local training and decentralized repartition) is responsible for only a fraction of parameters of the whole network. The whole ResNet is never fully stored, communicated or updated on a single worker during training.</b>|
 
@@ -119,7 +119,10 @@ By simply pre-training a model for a few epochs with local SGD, the remainder of
 
 ### Small-Scale Image Classification
 
-{% include image.html url="/images/resist/table_2.png" description="Table 2: Test accuracy of baseline LocalSGD versus ResIST on small-scale image classification datasets." %}
+| ![table_2.jpg](/images/resist/table_2.png) |
+|:--:|
+| <b>Table 2: Test accuracy of baseline LocalSGD versus ResIST on small-scale image classification datasets.</b>|
+
 
 #### Accuracy.
 The test accuracy of models trained with both **ResIST** and local SGD on small-scale image classification datasets is listed in Table 2.
@@ -130,7 +133,9 @@ In fact, the performance gap between the two method does not exceed 1% in any ex
 Furthermore, **ResIST** performance remains stable as the number of sub-ResNets increases, allowing greater acceleration to be achieved without degraded performance (e.g., see CIFAR100 results in Table 2).
 Generally, using four sub-ResNets yields the best performance with **ResIST**.
 
-{% include image.html url="/images/resist/table_3.png" description="Table 3: Total training time in seconds of baseline models and models trained with ResIST on small-scale image classification datasets." %}
+| ![table_3.jpg](/images/resist/table_2.png) |
+|:--:|
+| <b>Table 3: Total training time in seconds of baseline models and models trained with ResIST on small-scale image classification datasets.</b>|
 
 #### Efficiency.
 In addition to achieving comparable test accuracy to local SGD, **ResIST** significantly accelerates training.
@@ -142,7 +147,9 @@ We conjecture that for cases with higher communication cost at each synchronizat
 A visualization of the speedup provided by **ResIST** on the CIFAR10 and CIFAR100 datasets is illustrated in Fig. 4.
 From these experiments, it is clear that the communication-efficiency of **ResIST** allows the benefit of more devices to be better realized in the distributed setting. 
 
-{% include image.html url="/images/resist/cifar10_timing-1.png" description="Figure 4: Both methodologies complete 160 epochs of training. Accuracy values are smoothed using a 1-D gaussian filter, and shaded regions represent deviations in accuracy." %}
+| ![fig_4.jpg](/images/resist/cifar10_timing-1.png) |
+|:--:|
+| <b>Figure 4: Both methodologies complete 160 epochs of training. Accuracy values are smoothed using a 1-D gaussian filter, and shaded regions represent deviations in accuracy.</b>|
 
 ### Large-Scale Image Classification
 #### Accuracy. 
@@ -151,11 +158,16 @@ As can be seen, **ResIST achieves comparable test accuracy (<2% difference) to l
 As many current image classification models overfit to the ImageNet test set and cannot generalize well to new data, models trained with both local SGD and **ResIST** are also evaluated on three different Imagenet V2 testing sets.
 As shown in Table 4, **ResIST** consistently achieves comparable test accuracy in comparison to local SGD on these supplemental test sets. 
 
-{% include image.html url="/images/resist/table_4.png" description="Table 4: Performance of baseline models and models trained with ResIST on 1K Imagenet. MF stands for test set MatchedFrequency and was sampled to match the MTurk selection frequency distribution of the original ImageNet validation set for each class; T-0.7 stands for test set Threshold0.7 and was built by sampling ten images for each class among the candidates with selection frequency at least 0.7; TI stands for test set TopImages and contains the ten images with highest selection frequency in our candidate pool for each class." %}
+| ![table_4.jpg](/images/resist/table_4.png) |
+|:--:|
+| <b>Table 4: Performance of baseline models and models trained with ResIST on 1K Imagenet. MF stands for test set MatchedFrequency and was sampled to match the MTurk selection frequency distribution of the original ImageNet validation set for each class; T-0.7 stands for test set Threshold0.7 and was built by sampling ten images for each class among the candidates with selection frequency at least 0.7; TI stands for test set TopImages and contains the ten images with highest selection frequency in our candidate pool for each class.</b>|
 
 #### Efficiency. 
 As shown in Tables 4, **ResIST** significantly accelerates the ImageNet training process.
 However, due to the use of fewer local iterations and the local SGD warm-up phase, the speedup provided by **ResIST** is smaller relative to experiments on small-scale datasets.
 In Table 5, it is shown that **ResIST** can reduce the total communication volume during training, which is an important feature in the implementation of distributed systems with high computational costs.
 
-{% include image.html url="/images/resist/table_5.png" description="Table 5: Total training time on Imagenet (in hours) of models trained with both local SGD and ResIST using two and four machines to reach a fixed test accuracy." %}
+| ![table_5.jpg](/images/resist/table_4.png) |
+|:--:|
+| <b>Table 5: Total training time on Imagenet (in hours) of models trained with both local SGD and ResIST using two and four machines to reach a fixed test accuracy.</b>|
+
