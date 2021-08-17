@@ -1,13 +1,14 @@
----
-layout: post
-title: ResIST&#58; Layer-Wise Decomposition of ResNets for Distributed Training
----
+# ResIST&#58; Layer-Wise Decomposition of ResNets for Distributed Training
+
 
 
 ## Abstract
 We propose **ResIST**, a novel distributed training protocol for Residual Networks (ResNets). **ResIST** randomly decomposes a global ResNet into several shallow sub-ResNets that are trained independently in a distributed manner for several local iterations, before having their updates synchronized and aggregated into the global model. In the next round, new sub-ResNets are randomly generated and the process repeats. By construction, per iteration, **ResIST** communicates only a small portion of network parameters to each machine and never uses the full model during training. Thus, **ResIST** reduces the communication, memory, and time requirements of ResNet training to only a fraction of the requirements of previous methods. In comparison to common protocols like data-parallel training and data-parallel training with local SGD, **ResIST** yields a decrease in wall-clock training time, while being competitive with respect to model performance.
 
-{% include image.html url="/images/resist/resnet_ist.png" description="Figure 1: The ResIST model: we depict the process of partitioning the layers of a ResNet to different sub-ResNets, then aggregating the updated parameters back into the global network. Row (a) represents the original global ResNet. Row (b) shows the creation of two sub-ResNets. Observe that subnetwork 1 contains the residual blocks 1, 2 and 4, while subnetwork 2 contains the residual blocks 3, 4 and 5. Row (c) shows the reassembly of the global ResNet, after locally training subnetworks 1 and 2 for some number of local SGD iterations; residual blocks that are common across subnetworks (e.g., residual block 4) are aggregated appropriately during the reassembly." %}
+| ![fig_1.jpg](/images/resist/resnet_ist.png) |
+|:--:|
+| <b>Figure 1: The ResIST model: we depict the process of partitioning the layers of a ResNet to different sub-ResNets, then aggregating the updated parameters back into the global network. Row (a) represents the original global ResNet. Row (b) shows the creation of two sub-ResNets. Observe that subnetwork 1 contains the residual blocks 1, 2 and 4, while subnetwork 2 contains the residual blocks 3, 4 and 5. Row (c) shows the reassembly of the global ResNet, after locally training subnetworks 1 and 2 for some number of local SGD iterations; residual blocks that are common across subnetworks (e.g., residual block 4) are aggregated appropriately during the reassembly.</b>|
+
 
 ## Introduction
 In recent years, the field of Computer Vision (CV) has seen a revolution, beginning with the introduction of AlexNet during the ILSVRC2012 competition. 
@@ -35,7 +36,10 @@ For most experiments, a ResNet101 architecture is selected, which balances suffi
 
 **ResIST** performs best with pre-activation ResNets. Intuitively, applying batch normalization prior to the convolution ensures that the input distribution of remaining residual blocks will remain fixed, even when certain layers are removed from the architecture.
 
-{% include image.html url="/images/resist/resnet_model.png" description="Figure 2: The pre-activation ResNet101 model used in the majority of experiments. The figure identifies the convolutional blocks that are partitioned to subnetworks. The network is comprised of four major sections, each containing a certain number of convolutional blocks of equal channel dimension." %}
+| ![fig_2.jpg](/images/resist/resnet_model.png) |
+|:--:|
+| <b>Figure 2: The pre-activation ResNet101 model used in the majority of experiments. The figure identifies the convolutional blocks that are partitioned to subnetworks. The network is comprised of four major sections, each containing a certain number of convolutional blocks of equal channel dimension.</b>|
+
 
 ### Sub-ResNet Construction
 
@@ -65,7 +69,9 @@ Following independent training, the updates from each sub-ResNet are aggregated 
 If a parameter is only partitioned to a single sub-ResNet, aggregation simplifies to copying the parameter into the global model.
 After aggregation, layers from the global model are re-partitioned randomly to create a new group of sub-ResNets, and this entire process is repeated.
 
-{% include image.html url="/images/resist/Decentralized (1).png" description="Figure 3: A depiction of the decentralized repartition procedure. This example partitions a ResNet with eight blocks into four different sub-ResNets. The blue-green-red squares dictate the data that lies per worker; the orange column dictates the last classification layer. As seen in the figure, each worker (from initialization partition to local training and decentralized repartition) is responsible for only a fraction of parameters of the whole network. The whole ResNet is never fully stored, communicated or updated on a single worker during training." %}
+| ![fig_3.jpg](/images/resist/Decentralized (1).png) |
+|:--:|
+| <b>Figure 3: A depiction of the decentralized repartition procedure. This example partitions a ResNet with eight blocks into four different sub-ResNets. The blue-green-red squares dictate the data that lies per worker; the orange column dictates the last classification layer. As seen in the figure, each worker (from initialization partition to local training and decentralized repartition) is responsible for only a fraction of parameters of the whole network. The whole ResNet is never fully stored, communicated or updated on a single worker during training.</b>|
 
 ### Implementation Details
 
