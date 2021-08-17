@@ -9,6 +9,14 @@ We propose **ResIST**, a novel distributed training protocol for Residual Networ
 |:--:|
 | <b>Figure 1: The ResIST model: we depict the process of partitioning the layers of a ResNet to different sub-ResNets, then aggregating the updated parameters back into the global network. Row (a) represents the original global ResNet. Row (b) shows the creation of two sub-ResNets. Observe that subnetwork 1 contains the residual blocks 1, 2 and 4, while subnetwork 2 contains the residual blocks 3, 4 and 5. Row (c) shows the reassembly of the global ResNet, after locally training subnetworks 1 and 2 for some number of local SGD iterations; residual blocks that are common across subnetworks (e.g., residual block 4) are aggregated appropriately during the reassembly.</b>|
 
+## Usage
+This is the **ResIST** code for 4 GPU distributed cifar100 experiments. "cifar100_local_iteration_test.py" is the ResIST code while "cifar100_local_sgd_test.py" is the local sgd baseline. We tested them on AWS p3.8xlarge instance for this experiment. Please use AWS AMI 18.04 image and pytorch_p36 conda enviornment.
+
+Run "cifar100_local_iteration_test.sh" for ResIST experiment.
+
+Run "cifar100_local_sgd_test.sh" for local sgd baseline.
+
+Result will be stored in the "log" folder.
 
 ## Introduction
 In recent years, the field of Computer Vision (CV) has seen a revolution, beginning with the introduction of AlexNet during the ILSVRC2012 competition. 
