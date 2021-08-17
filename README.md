@@ -65,7 +65,9 @@ As shown in the transition from row (a) to (b) within Fig. 1, indices of partiti
 The shallow sub-ResNets created by **ResIST** accelerate training and reduce communication in comparison to methods that communicate and train the full model.
 Table 1 shows the comparison of local SGD to **ResIST** with respect to the amount of data communicated during each synchronization round for different numbers of machines, highlighting the superior communication-efficiency of **ResIST**.
 
-{% include image.html url="/images/resist/table_1.png" description="Table 1: Reports the amount of data communicated during each communication round (in GB) of both local SGD and ResIST across different numbers of machines with ResNet101." %}
+| ![table_1.jpg](/images/resist/table_1.png) |
+|:--:|
+| <b>Table 1: Reports the amount of data communicated during each communication round (in GB) of both local SGD and ResIST across different numbers of machines with ResNet101.</b>|
 
 ### Distributed Training
 
